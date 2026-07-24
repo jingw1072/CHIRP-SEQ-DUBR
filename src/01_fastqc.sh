@@ -11,7 +11,7 @@
 
 # ---- Slurm settings ---------------------------------------------------------
 #SBATCH --job-name=dubr_fastqc
-#SBATCH --account=jiw619
+#SBATCH --account=htl145
 #SBATCH --partition=hotel
 #SBATCH --qos=hotel
 #SBATCH --nodes=1
@@ -23,7 +23,7 @@
 
 # ---- Turn on our software ---------------------------------------------------
 source ~/miniconda3/etc/profile.d/conda.sh
-conda activate chirp-seq
+conda activate CHIRP-SEQ
 
 # ---- Paths ------------------------------------------------------------------
 out="/tscc/lustre/ddn/scratch/$USER/chirp_seq_analysis/dubr"
@@ -43,6 +43,6 @@ fastqc -t "$threads" -o "$qc_dir" \
     "$fastq_dir"/ODD_rep2_R1.fastq.gz   "$fastq_dir"/ODD_rep2_R2.fastq.gz
 
 # MultiQC combines all the FastQC reports into one easy-to-read summary.
-multiqc "$qc_dir" -o "$out/multiqc_raw"
+# multiqc "$qc_dir" -o "$out/multiqc_raw"
 
 echo "FastQC reports are in: $qc_dir"
