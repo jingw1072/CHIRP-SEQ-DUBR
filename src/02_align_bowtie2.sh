@@ -12,7 +12,7 @@
 
 # ---- Slurm settings ---------------------------------------------------------
 #SBATCH --job-name=dubr_align
-#SBATCH --account=jiw619
+#SBATCH --account=htl145
 #SBATCH --partition=hotel
 #SBATCH --qos=hotel
 #SBATCH --nodes=1
@@ -21,10 +21,12 @@
 #SBATCH --mem=64G
 #SBATCH --time=24:00:00
 #SBATCH --output=%x-%j.out
+#SBATCH --mail-type END
+#SBATCH --mail-user jiw169@ucsd.edu
 
 # ---- Turn on our software ---------------------------------------------------
 source ~/miniconda3/etc/profile.d/conda.sh
-conda activate chirp-seq
+conda activate CHIRP-SEQ
 
 # ---- Paths ------------------------------------------------------------------
 out="/tscc/lustre/ddn/scratch/$USER/chirp_seq_analysis/dubr"

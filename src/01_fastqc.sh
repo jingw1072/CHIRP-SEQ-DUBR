@@ -20,6 +20,8 @@
 #SBATCH --mem=16G
 #SBATCH --time=04:00:00
 #SBATCH --output=%x-%j.out
+#SBATCH --mail-type END
+#SBATCH --mail-user jiw169@ucsd.edu
 
 # ---- Turn on our software ---------------------------------------------------
 source ~/miniconda3/etc/profile.d/conda.sh
