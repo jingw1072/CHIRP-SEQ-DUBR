@@ -21,7 +21,7 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=8G
 #SBATCH --time=01:00:00
-#SBATCH --output=%x-%j.out
+#SBATCH --output=/tscc/lustre/ddn/scratch/jiw169/chirp_seq_analysis/dubr/%x-%j.out
 #SBATCH --mail-type END
 #SBATCH --mail-user jiw169@ucsd.edu
 
@@ -41,6 +41,8 @@ odd_np="$peak_dir/DUBR_ODD_FC${fc_min}_noBL.narrowPeak"
 # Trim each peak file down to 6 columns (chromosome, start, end, name,
 # fold-enrichment, q-value) and sort by position. The 6-column format makes the
 # overlap width land in a predictable column (13) after the intersect below.
+#-k1,1 means sort using column 1 only (usually chromosome). 
+#-k2,2n means within each chromosome, sort by column 2 numerically (n = numeric)
 awk 'BEGIN{OFS="\t"} {print $1,$2,$3,$4,$7,$9}' "$even_np" \
     | sort -k1,1 -k2,2n > "$peak_dir/EVEN_6col.bed"
 awk 'BEGIN{OFS="\t"} {print $1,$2,$3,$4,$7,$9}' "$odd_np" \

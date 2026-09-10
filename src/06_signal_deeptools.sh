@@ -22,7 +22,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=48G
 #SBATCH --time=08:00:00
-#SBATCH --output=%x-%j.out
+#SBATCH --output=/tscc/lustre/ddn/scratch/jiw169/chirp_seq_analysis/dubr/%x-%j.out
 #SBATCH --mail-type END
 #SBATCH --mail-user jiw169@ucsd.edu
 
@@ -48,7 +48,6 @@ for cond in Input EVEN ODD; do
         -o "$bw_dir/${cond}_CPM.bw" \
         --normalizeUsing CPM \
         --binSize 10 \
-        --extendReads \
         -p "$threads"
 done
 
