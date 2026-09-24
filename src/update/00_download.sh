@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
+# =============================================================================
+# STEP 0 - Download the 6 DUBR ChIRP-seq FASTQ files (from GEO GSE268501),
+#          plus the hg19 genome index and the ENCODE blacklist.
+#
+# HOW TO RUN (from a TSCC login node):
+#     sbatch 00_download.sh
+# Then check on it with:  squeue -u $USER
+# =============================================================================
+
+# ---- Slurm settings (these #SBATCH lines tell the cluster what to give us) ---
+#SBATCH --job-name=dubr_download   # name shown in the queue
 #SBATCH --account=htl145           # our allocation (who gets billed)
 #SBATCH --partition=hotel          # which set of machines to run on
 #SBATCH --qos=hotel                # quality-of-service that matches the partition

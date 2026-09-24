@@ -54,20 +54,19 @@ for sample in Input_rep1 Input_rep2 EVEN_rep1 EVEN_rep2 ODD_rep1 ODD_rep2; do
     #   -f 2     keep properly-paired reads
     #   -F 1280  drop duplicates + secondary alignments
     #   -q 30    drop poorly/low-quality mapped reads
-    #   -b       output BAM instead of SAM
+    #   -b       output BAM instead of SAM    
     samtools view -b -@ "$threads" -f 2 -F 1280 -q 30 \
         "$bam_dir/${sample}_dedup.bam" > "$bam_dir/${sample}_filt.bam"
     samtools index -@ "$threads" "$bam_dir/${sample}_filt.bam"
 
     # Delete the intermediate files we no longer need (saves disk space).
-    # -f  forces overwriting if the file already exists (e.g., from a previous run).
+    # -f  forces overwriting if the file already exists (e.g., from a previous run).    
     rm -f "$bam_dir/${sample}_namesort.bam" "$bam_dir/${sample}_fixmate.bam" "$bam_dir/${sample}_possort.bam" "$bam_dir/${sample}_dedup.bam"
 done
 
 # ---- 2) Merge the two replicates of each condition --------------------------
 for cond in Input EVEN ODD; do
     echo "=== merging $cond replicates ==="
-    # -f  forces overwriting if the file already exists (e.g., from a previous run).
     samtools merge -f -@ "$threads" "$bam_dir/${cond}_merged.bam" \
         "$bam_dir/${cond}_rep1_filt.bam" "$bam_dir/${cond}_rep2_filt.bam"
     samtools index -@ "$threads" "$bam_dir/${cond}_merged.bam"

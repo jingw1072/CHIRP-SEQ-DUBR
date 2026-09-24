@@ -45,6 +45,6 @@ fastqc -t "$threads" -o "$qc_dir" \
     "$fastq_dir"/ODD_rep2_R1.fastq.gz   "$fastq_dir"/ODD_rep2_R2.fastq.gz
 
 # MultiQC combines all the FastQC reports into one easy-to-read summary.
-# multiqc "$qc_dir" -o "$out/multiqc_raw"
+multiqc "$qc_dir" -o "$out/multiqc_raw"
 
 echo "FastQC reports are in: $qc_dir"

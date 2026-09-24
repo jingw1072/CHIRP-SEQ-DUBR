@@ -24,7 +24,6 @@
 #SBATCH --output=/tscc/lustre/ddn/scratch/jiw169/chirp_seq_analysis/dubr/%x-%j.out
 #SBATCH --mail-type END
 #SBATCH --mail-user jiw169@ucsd.edu
-
 # ---- Turn on our software ---------------------------------------------------
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate CHIRP-SEQ

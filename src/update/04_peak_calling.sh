@@ -45,9 +45,11 @@ for pool in EVEN ODD; do
     # -f BAMPE  the data is paired-end
     # -g hs     human genome
     # -q 0.01   statistical cutoff (false discovery rate < 1%)
+    # Uses the UCSC-named BAMs from step 03b (chr1, chr2...) so that the
+    # blacklist filter below actually matches chromosome names.
     macs2 callpeak \
-        -t "$bam_dir/${pool}_merged.bam" \
-        -c "$bam_dir/Input_merged.bam" \
+        -t "$bam_dir/${pool}_merged.chr.bam" \
+        -c "$bam_dir/Input_merged.chr.bam" \
         -f BAMPE \
         -g hs \
         -q 0.01 \
@@ -57,6 +59,13 @@ for pool in EVEN ODD; do
         2> "$peak_dir/DUBR_${pool}_macs2.log"
 
     np="$peak_dir/DUBR_${pool}_peaks.narrowPeak"
+
+    # Safety check: peaks and blacklist must both say "chr1" (or both say "1").
+    # Otherwise bedtools would compare "1" with "chr1" and remove nothing.
+    if [ "$(head -1 "$np" | cut -f1 | grep -c '^chr')" != "$(head -1 "$blacklist" | cut -f1 | grep -c '^chr')" ]; then
+        echo "ERROR: chromosome names differ between peaks and blacklist - run 03b first" >&2
+        exit 1
+    fi
 
     # Column 7 of the peak file is the fold-enrichment. Keep rows where it's >= 5.
     awk -v fc="$fc_min" 'BEGIN{OFS="\t"} $7 >= fc' "$np" \
@@ -69,9 +78,11 @@ for pool in EVEN ODD; do
         > "$peak_dir/DUBR_${pool}_FC${fc_min}_noBL.narrowPeak"
 
     # Print how many peaks survived each filter (wc -l counts lines/peaks).
+    n_fc=$(wc -l < "$peak_dir/DUBR_${pool}_FC${fc_min}.narrowPeak")
+    n_bl=$(wc -l < "$peak_dir/DUBR_${pool}_FC${fc_min}_noBL.narrowPeak")
     echo "  $pool raw:        $(wc -l < "$np")"
-    echo "  $pool FC>=$fc_min:     $(wc -l < "$peak_dir/DUBR_${pool}_FC${fc_min}.narrowPeak")"
-    echo "  $pool FC+noBL:    $(wc -l < "$peak_dir/DUBR_${pool}_FC${fc_min}_noBL.narrowPeak")"
+    echo "  $pool FC>=$fc_min:     $n_fc"
+    echo "  $pool FC+noBL:    $n_bl   (blacklist removed $((n_fc - n_bl)); expect a few dozen, not 0)"
 done
 
 echo "Peak files are in: $peak_dir"
