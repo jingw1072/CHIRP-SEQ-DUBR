@@ -44,7 +44,7 @@
 
 # ---- Slurm settings ---------------------------------------------------------
 #SBATCH --job-name=dubr_motifs
-#SBATCH --account=jiw619
+#SBATCH --account=htl145
 #SBATCH --partition=hotel
 #SBATCH --qos=hotel
 #SBATCH --nodes=1
@@ -52,7 +52,9 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem=32G
 #SBATCH --time=6:00:00
-#SBATCH --output=%x-%j.out
+#SBATCH --output=/tscc/lustre/ddn/scratch/jiw169/chirp_seq_analysis/dubr/%x-%j.out
+#SBATCH --mail-type END
+#SBATCH --mail-user jiw169@ucsd.edu
 
 set -euo pipefail
 source ~/miniconda3/etc/profile.d/conda.sh

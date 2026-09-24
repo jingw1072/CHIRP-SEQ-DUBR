@@ -21,7 +21,7 @@
 
 # ---- Slurm settings ---------------------------------------------------------
 #SBATCH --job-name=dubr_tracks
-#SBATCH --account=jiw619
+#SBATCH --account=htl145
 #SBATCH --partition=hotel
 #SBATCH --qos=hotel
 #SBATCH --nodes=1
@@ -29,11 +29,13 @@
 #SBATCH --cpus-per-task=12
 #SBATCH --mem=32G
 #SBATCH --time=06:00:00
-#SBATCH --output=%x-%j.out
+#SBATCH --output=/tscc/lustre/ddn/scratch/jiw169/chirp_seq_analysis/dubr/%x-%j.out
+#SBATCH --mail-type END
+#SBATCH --mail-user jiw169@ucsd.edu
 
 set -euo pipefail
 source ~/miniconda3/etc/profile.d/conda.sh
-conda activate chirp-seq
+conda activate CHIRP-SEQ
 
 # ---- Paths ------------------------------------------------------------------
 out="/tscc/lustre/ddn/scratch/$USER/chirp_seq_analysis/dubr"
